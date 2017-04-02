@@ -17,10 +17,9 @@ import {
 
 export default class Example extends Component {
   render() {
-    const d = Path().moveTo(80, 20).lineTo(280, 150).lineTo(80, 280).close();
     return (
       <View style={styles.container}>
-        <DynamicButton width="300" height="300">
+        <DynamicButton style={{width: 300, height: 300}}>
         </DynamicButton>
       </View>
     );
