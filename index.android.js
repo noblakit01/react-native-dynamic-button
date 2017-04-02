@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -17,15 +11,17 @@ import {
   Shape,
   Path
 } from 'ReactNativeART';
+import {
+  DynamicButton
+} from './DynamicButton'
 
-export default class DynamicButton extends Component {
+export default class Example extends Component {
   render() {
     const d = Path().moveTo(80, 20).lineTo(280, 150).lineTo(80, 280).close();
     return (
       <View style={styles.container}>
-        <Surface width="300" height="300">
-          <Shape stroke="#ff0000" strokeWidth="8" strokeJoin="round" strokeCap="round" d = {d} />
-        </Surface>
+        <DynamicButton width="300" height="300">
+        </DynamicButton>
       </View>
     );
   }
@@ -40,4 +36,4 @@ const styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('DynamicButton', () => DynamicButton);
+AppRegistry.registerComponent('Example', () => Example);
