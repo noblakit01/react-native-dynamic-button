@@ -8,40 +8,52 @@ import {
   Path
 } from 'ReactNativeART';
 
-export DynamicButtonType = {
+export const DynamicButtonType = {
 	'Play': 'play',
 	'Pause': 'pause',
 	'Stop': 'stop',
 };
 
 export class DynamicButton extends Component {
-	
+  
+  constructor(props) {
+    super(props);
+    this.state = {d: this.currentPath()};
+  }
+  
   currentPath() {
 	const width = this.props.style.width;
     const height = this.props.style.height;
     const padding = this.props.padding;
     const type = this.props.type;
     if (type == DynamicButtonType.Play) {
-	  const d = Path()
+	  return Path()
 		.moveTo(width / 3 - padding, padding)
 		.lineTo(width - padding, height / 2)
 		.lineTo(width / 3 - padding, height - padding)
 		.close();
-	  return d;
 	} else if (type == DynamicButtonType.Pause) {
-	  const d = Path()
-		.moveTo(width / 3 - padding, padding)
-		.lineTo(width - padding, height / 2)
-		.lineTo(width / 3 - padding, height - padding)
+	  return Path()
+		.moveTo(width * 0.35, padding * 2)
+		.lineTo(width * 0.35, height - padding * 2)
+        .moveTo(width * 0.65, padding * 2)
+		.lineTo(width * 0.65, height - padding * 2)
 		.close();
-	  return d;
-	}	
+	} else if (type == DynamicButtonType.Stop) {
+      return Path()
+		.moveTo(padding, padding)
+		.lineTo(width - padding, padding)
+        .lineTo(width - padding, height - padding)
+		.lineTo(padding, height - padding)
+        .lineTo(padding, padding)
+		.close();
+    }
   }	
   	
   render() {
     return (
       <View>
-        <Surface width={width} height={height}>
+        <Surface width={this.props.style.width} height={this.props.style.height}>
           <Shape stroke={this.props.strokeColor} strokeWidth={this.props.strokeWidth} d = {this.state.d} />
         </Surface>
       </View>
@@ -60,5 +72,5 @@ DynamicButton.defaultProps = {
   strokeColor: '#9FABFF',
   strokeWidth: 8,
   padding: 40,
-  type: {DynamicButtonType.Play},
+  type: DynamicButtonType.Play,
 };

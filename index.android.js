@@ -12,14 +12,15 @@ import {
   Path
 } from 'ReactNativeART';
 import {
-  DynamicButton
+  DynamicButton,
+  DynamicButtonType
 } from './DynamicButton'
 
 export default class Example extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <DynamicButton style={{width: 300, height: 300}}>
+        <DynamicButton style={{width: 300, height: 300}} type={DynamicButtonType.Stop}>
         </DynamicButton>
       </View>
     );
