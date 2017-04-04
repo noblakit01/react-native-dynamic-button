@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import {
-  View
+  View,
+  TouchableOpacity
 } from 'react-native';
 import {
   Surface,
@@ -52,12 +53,17 @@ export class DynamicButton extends Component {
   	
   render() {
     return (
-      <View>
+      <TouchableOpacity onPress={this._onPress} >
         <Surface width={this.props.style.width} height={this.props.style.height}>
           <Shape stroke={this.props.strokeColor} strokeWidth={this.props.strokeWidth} d = {this.state.d} />
         </Surface>
-      </View>
+      </TouchableOpacity>
     );
+  }
+  
+  
+  // Touch 
+  _onPress() {
   }
 }
 
