@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import {
   View,
-  TouchableOpacity
+  TouchableWithoutFeedback
 } from 'react-native';
 import {
   Surface,
@@ -53,12 +53,17 @@ export class DynamicButton extends Component {
   }	
   	
   render() {
+    console.log("rendering update 3");
+    const width = this.props.style.width;
+    const height = this.props.style.height;
     return (
-      <TouchableOpacity onPress={this._onPress} >
-        <Surface width={this.props.style.width} height={this.props.style.height}>
+      <TouchableWithoutFeedback onPress={this._onPress} onPressIn={this._onPressIn} onPressOut={this._onPressOut}>
+        <View style={{width: width, height: height}}>
+          <Surface width={width} height={height}>
           <Shape stroke={this.props.strokeColor} strokeWidth={this.props.strokeWidth} d = {this.state.d} />
         </Surface>
-      </TouchableOpacity>
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
   
@@ -66,6 +71,14 @@ export class DynamicButton extends Component {
   // Touch 
   _onPress() {
 	console.log("_onPress");
+  }
+  
+  _onPressIn() {
+    console.log("onPressIn");
+  }
+  
+  _onPressOut() {
+    console.log("onPressOut");
   }
 }
 
