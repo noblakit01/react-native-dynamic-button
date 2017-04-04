@@ -20,6 +20,7 @@ export class DynamicButton extends Component {
   constructor(props) {
     super(props);
     this.state = {d: this.currentPath()};
+	console.log("Test");
   }
   
   currentPath() {
@@ -64,6 +65,7 @@ export class DynamicButton extends Component {
   
   // Touch 
   _onPress() {
+	console.log("_onPress");
   }
 }
 
