@@ -20,11 +20,11 @@ export default class Example extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <DynamicButton style={{width: 300, height: 300}} type={DynamicButtonType.Play}>
+        <DynamicButton style={{width: 300, height: 300}} type={DynamicButtonType.Pause} padding={80}>
         </DynamicButton>
       </View>
     );
-  }
+  };
 }
 
 const styles = StyleSheet.create({
