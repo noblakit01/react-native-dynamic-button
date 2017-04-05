@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import {
   View,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Animated
 } from 'react-native';
 import {
   Surface,
@@ -19,13 +20,20 @@ export class DynamicButton extends Component {
   
   constructor(props) {
     super(props);
-    this.state = {d: this.currentPath()};
-	console.log("Test");
+    
+    this.scale = 1.0;
+    
+    this.state = {scale: 1.0};
+    this.scaleAnim = new Animated.Value(1);
+    this.scaleAnim.addListener(({value}) => {
+      this.setState({scale: value});
+      console.log("Update scale " + this.state.scale);
+    });
   }
   
   currentPath() {
-	const width = this.props.style.width;
-    const height = this.props.style.height;
+	const width = this.props.style.width * this.state.scale;
+    const height = this.props.style.height * this.state.scale;
     const padding = this.props.padding;
     const type = this.props.type;
     if (type == DynamicButtonType.Play) {
@@ -53,14 +61,15 @@ export class DynamicButton extends Component {
   }	
   	
   render() {
-    console.log("rendering update 3");
-    const width = this.props.style.width;
-    const height = this.props.style.height;
+    const width = this.props.style.width * this.state.scale;
+    const height = this.props.style.height * this.state.scale;
+    const d = this.currentPath();
+    console.log("render");
     return (
-      <TouchableWithoutFeedback onPress={this._onPress} onPressIn={this._onPressIn} onPressOut={this._onPressOut}>
+      <TouchableWithoutFeedback onPress={this._onPress} onPressIn={this._onPressIn(this)} onPressOut={this._onPressOut}>
         <View style={{width: width, height: height, backgroundColor: '#FF0000'}}>
           <Surface width={width} height={height}>
-          <Shape stroke={this.props.strokeColor} strokeWidth={this.props.strokeWidth} d = {this.state.d} />
+          <Shape stroke={this.props.strokeColor} strokeWidth={this.props.strokeWidth} d = {d} />
         </Surface>
         </View>
       </TouchableWithoutFeedback>
@@ -74,11 +83,18 @@ export class DynamicButton extends Component {
   }
   
   _onPressIn() {
-    console.log("onPressIn");
+    console.log("_onPressIn");
+    
+    Animated.timing(
+      this.scaleAnim,
+      {
+        toValue: 1.2,
+      }
+    ).start();
   }
   
   _onPressOut() {
-    console.log("onPressOut");
+    console.log("_onPressOut");
   }
 }
 
