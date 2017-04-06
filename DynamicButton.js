@@ -21,14 +21,8 @@ export class DynamicButton extends Component {
   constructor(props) {
     super(props);
     
-    this.scale = 1.0;
-    
     this.state = {scale: 1.0};
-    this.scaleAnim = new Animated.Value(1);
-    this.scaleAnim.addListener(({value}) => {
-      this.setState({scale: value});
-      console.log("Update scale " + this.state.scale);
-    });
+    console.log("Start 1");
   }
   
   currentPath() {
@@ -64,9 +58,9 @@ export class DynamicButton extends Component {
     const width = this.props.style.width * this.state.scale;
     const height = this.props.style.height * this.state.scale;
     const d = this.currentPath();
-    console.log("render");
+    console.log("render 1");
     return (
-      <TouchableWithoutFeedback onPress={this._onPress} onPressIn={this._onPressIn(this)} onPressOut={this._onPressOut}>
+      <TouchableWithoutFeedback onPress={this._onPress} onPressIn={this._onPressIn} onPressOut={this._onPressOut}>
         <View style={{width: width, height: height, backgroundColor: '#FF0000'}}>
           <Surface width={width} height={height}>
           <Shape stroke={this.props.strokeColor} strokeWidth={this.props.strokeWidth} d = {d} />
@@ -83,14 +77,7 @@ export class DynamicButton extends Component {
   }
   
   _onPressIn() {
-    console.log("_onPressIn");
-    
-    Animated.timing(
-      this.scaleAnim,
-      {
-        toValue: 1.2,
-      }
-    ).start();
+    console.log("_onPressIn WTF");
   }
   
   _onPressOut() {
