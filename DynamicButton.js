@@ -21,44 +21,44 @@ export class DynamicButton extends Component {
   constructor(props) {
     super(props);
     
-    this.state = {padding: this.props.padding};
+    this.state = {paddingHightlight: 0};
     console.log("Start 1");
   }
   
   componentWillMount() {
     console.log("componentWillMount");
-    this.paddingAnim = new Animated.Value(this.props.padding);
+    this.paddingAnim = new Animated.Value(0);
     this.paddingAnim.addListener(({value}) => {
-      this.setState({padding: value});
-      console.log("Update scale " + this.state.padding);
+      this.setState({paddingHightlight: value});
+      console.log("Update scale " + this.state.paddingHightlight);
     });
   }
   
   currentPath() {
 	const width = this.props.style.width;
     const height = this.props.style.height;
-    const padding = this.state.padding;
+    const paddingHightlight = this.state.paddingHightlight;
     const type = this.props.type;
     if (type == DynamicButtonType.Play) {
 	  return Path()
-		.moveTo(padding, padding)
-		.lineTo(width - padding, height / 2)
-		.lineTo(padding, height - padding)
+		.moveTo(width * 0.2, height * 0.1)
+		.lineTo(width * 0.86, height / 2)
+		.lineTo(width * 0.2, height * 0.9)
 		.close();
 	} else if (type == DynamicButtonType.Pause) {
 	  return Path()
-		.moveTo(width * 0.35, padding)
-		.lineTo(width * 0.35, height - padding)
-        .moveTo(width * 0.65, padding)
-		.lineTo(width * 0.65, height - padding)
+		.moveTo(width * 0.33, height * 0.15)
+		.lineTo(width * 0.33, height * 0.85)
+        .moveTo(width * 0.67, height * 0.15)
+		.lineTo(width * 0.67, height * 0.85)
 		.close();
 	} else if (type == DynamicButtonType.Stop) {
       return Path()
-		.moveTo(padding, padding)
-		.lineTo(width - padding, padding)
-        .lineTo(width - padding, height - padding)
-		.lineTo(padding, height - padding)
-        .lineTo(padding, padding)
+		.moveTo(width * 0.15, height * 0.15)
+		.lineTo(width * 0.85, height * 0.15)
+        .lineTo(width * 0.85, height * 0.85)
+		.lineTo(width * 0.15, height * 0.85)
+        .lineTo(width * 0.15, height * 0.15)
 		.close();
     }
   }	
@@ -108,15 +108,11 @@ export class DynamicButton extends Component {
 DynamicButton.propTypes = {
   strokeColor: PropTypes.string,
   strokeWidth: PropTypes.number,
-  padding: PropTypes.number,
-  paddingHightlight: PropTypes.number,
   type: PropTypes.oneOf([DynamicButtonType.Play, DynamicButtonType.Pause, DynamicButtonType.Stop]),
 };
 
 DynamicButton.defaultProps = {
   strokeColor: '#9FABFF',
   strokeWidth: 8,
-  padding: 40,
-  paddingHightlight: 20,
   type: DynamicButtonType.Play,
 };

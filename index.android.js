@@ -20,7 +20,7 @@ export default class Example extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <DynamicButton style={{width: 300, height: 300}} type={DynamicButtonType.Pause} padding={80}>
+        <DynamicButton style={{width: 300, height: 300}} type={DynamicButtonType.Stop}>
         </DynamicButton>
       </View>
     );
