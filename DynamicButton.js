@@ -21,23 +21,23 @@ export class DynamicButton extends Component {
   constructor(props) {
     super(props);
     
-    this.state = {scale: 1.0};
+    this.state = {padding: this.props.padding};
     console.log("Start 1");
   }
   
   componentWillMount() {
     console.log("componentWillMount");
-    this.scaleAnim = new Animated.Value(1);
-    this.scaleAnim.addListener(({value}) => {
-      this.setState({scale: value});
-      console.log("Update scale " + this.state.scale);
+    this.paddingAnim = new Animated.Value(this.props.padding);
+    this.paddingAnim.addListener(({value}) => {
+      this.setState({padding: value});
+      console.log("Update scale " + this.state.padding);
     });
   }
   
   currentPath() {
-	const width = this.props.style.width * this.state.scale;
-    const height = this.props.style.height * this.state.scale;
-    const padding = this.props.padding;
+	const width = this.props.style.width;
+    const height = this.props.style.height;
+    const padding = this.state.padding;
     const type = this.props.type;
     if (type == DynamicButtonType.Play) {
 	  return Path()
@@ -64,8 +64,8 @@ export class DynamicButton extends Component {
   }	
   	
   render() {
-    const width = this.props.style.width * this.state.scale;
-    const height = this.props.style.height * this.state.scale;
+    const width = this.props.style.width;
+    const height = this.props.style.height;
     const d = this.currentPath();
     console.log("render 1");
     return (
@@ -87,15 +87,15 @@ export class DynamicButton extends Component {
   
   _onPressIn() {
     console.log("_onPressIn WTF");
-    if (this.scaleAnim) {
+    if (this.paddingAnim) {
       console.log("AAAA");
     } else {
       console.log("BBBB");
     }
     Animated.timing(
-      this.scaleAnim, 
+      this.paddingAnim, 
       {
-        toValue: 1.2,
+        toValue: this.props.paddingHightlight,
       }
     ).start();
   }
@@ -109,6 +109,7 @@ DynamicButton.propTypes = {
   strokeColor: PropTypes.string,
   strokeWidth: PropTypes.number,
   padding: PropTypes.number,
+  paddingHightlight: PropTypes.number,
   type: PropTypes.oneOf([DynamicButtonType.Play, DynamicButtonType.Pause, DynamicButtonType.Stop]),
 };
 
@@ -116,5 +117,6 @@ DynamicButton.defaultProps = {
   strokeColor: '#9FABFF',
   strokeWidth: 8,
   padding: 40,
+  paddingHightlight: 20,
   type: DynamicButtonType.Play,
 };
