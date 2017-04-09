@@ -10,6 +10,8 @@ import {
   Path
 } from 'ReactNativeART';
 
+import Morph from 'art/morph/path';
+
 export const DynamicButtonType = {
 	'Play': 'play',
 	'Pause': 'pause',
@@ -23,6 +25,29 @@ export class DynamicButton extends Component {
     
     this.state = {paddingHightlight: 0};
     console.log("Start 1");
+    
+    const width = this.props.style.width;
+    const height = this.props.style.height;
+    const type = this.props.type;
+    this.play = Path()
+		.moveTo(width * 0.2, height * 0.1)
+		.lineTo(width * 0.86, height / 2)
+		.lineTo(width * 0.2, height * 0.9)
+		.close();
+    this.pause = Path()
+		.moveTo(width * 0.33, height * 0.15)
+		.lineTo(width * 0.33, height * 0.85)
+        .moveTo(width * 0.67, height * 0.15)
+		.lineTo(width * 0.67, height * 0.85)
+		.close();
+    
+    var square = Morph.Path()
+  .move(100,0)
+  .line(100,0)
+  .line(0,100)
+  .line(-100,0)
+  .close();
+    this.test = Morph.Tween(this.play, this.pause);
   }
   
   componentWillMount() {
@@ -37,7 +62,6 @@ export class DynamicButton extends Component {
   currentPath() {
 	const width = this.props.style.width;
     const height = this.props.style.height;
-    const paddingHightlight = this.state.paddingHightlight;
     const type = this.props.type;
     if (type == DynamicButtonType.Play) {
 	  return Path()
