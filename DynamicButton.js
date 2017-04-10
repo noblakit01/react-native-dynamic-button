@@ -23,61 +23,54 @@ export class DynamicButton extends Component {
   constructor(props) {
     super(props);
     
-    this.state = {paddingHightlight: 0};
-    console.log("Start 1");
-    
-    const width = this.props.style.width;
-    const height = this.props.style.height;
-    const type = this.props.type;
-    this.play = Path()
-		.moveTo(width * 0.2, height * 0.1)
-		.lineTo(width * 0.86, height / 2)
-		.lineTo(width * 0.2, height * 0.9)
-		.close();
-    this.pause = Path()
-		.moveTo(width * 0.33, height * 0.15)
-		.lineTo(width * 0.33, height * 0.85)
-        .moveTo(width * 0.67, height * 0.15)
-		.lineTo(width * 0.67, height * 0.85)
-		.close();
-    
-    var square = Morph.Path()
-  .move(100,0)
-  .line(100,0)
-  .line(0,100)
-  .line(-100,0)
-  .close();
-    this.test = Morph.Tween(this.play, this.pause);
+    this.previousPath = this.getPath(DynamicButtonType.Play);
+    this.nextPath = this.getPath(DynamicButtonType.Pause);
+    this.state = {pathAnimation: Morph.Tween(this.previousPath, this.nextPath)};
+    console.log("do it do it");
   }
-  
-  componentWillMount() {
-    console.log("componentWillMount");
-    this.paddingAnim = new Animated.Value(0);
-    this.paddingAnim.addListener(({value}) => {
-      this.setState({paddingHightlight: value});
-      console.log("Update scale " + this.state.paddingHightlight);
+
+  animate(start) {
+    this.animating = requestAnimationFrame((timestamp) => {
+      if (!start) {
+        start = timestamp;
+      }
+      const delta = (timestamp - start) / AnimationDurationMs;
+
+      if (delta > 1) {
+        this.animating = null;
+        this.setState({
+          pathAnimation: this.previousPath
+        });
+
+        return;
+      }
+
+      this.state.pathAnimation.tween(delta);
+
+      this.setState(this.state, () => {
+        this.animate(start);
+      });
     });
   }
   
-  currentPath() {
+  getPath(type) {
 	const width = this.props.style.width;
     const height = this.props.style.height;
-    const type = this.props.type;
     if (type == DynamicButtonType.Play) {
-	  return Path()
+	  return Morph.Path()
 		.moveTo(width * 0.2, height * 0.1)
 		.lineTo(width * 0.86, height / 2)
 		.lineTo(width * 0.2, height * 0.9)
 		.close();
 	} else if (type == DynamicButtonType.Pause) {
-	  return Path()
+	  return Morph.Path()
 		.moveTo(width * 0.33, height * 0.15)
 		.lineTo(width * 0.33, height * 0.85)
         .moveTo(width * 0.67, height * 0.15)
 		.lineTo(width * 0.67, height * 0.85)
 		.close();
 	} else if (type == DynamicButtonType.Stop) {
-      return Path()
+      return Morph.Path()
 		.moveTo(width * 0.15, height * 0.15)
 		.lineTo(width * 0.85, height * 0.15)
         .lineTo(width * 0.85, height * 0.85)
@@ -90,13 +83,12 @@ export class DynamicButton extends Component {
   render() {
     const width = this.props.style.width;
     const height = this.props.style.height;
-    const d = this.currentPath();
-    console.log("render 1");
+    console.log("Render Accc");
     return (
       <TouchableWithoutFeedback onPress={this._onPress} onPressIn={this._onPressIn.bind(this)} onPressOut={this._onPressOut}>
         <View style={{width: width, height: height, backgroundColor: '#FF0000'}}>
           <Surface width={width} height={height}>
-          <Shape stroke={this.props.strokeColor} strokeWidth={this.props.strokeWidth} d = {d} />
+          <Shape stroke={this.props.strokeColor} strokeWidth={this.props.strokeWidth} d = {this.state.pathAnimation} />
         </Surface>
         </View>
       </TouchableWithoutFeedback>
