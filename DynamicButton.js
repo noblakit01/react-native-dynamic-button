@@ -85,9 +85,9 @@ export class DynamicButton extends Component {
     const height = this.props.style.height;
     if (type == DynamicButtonType.Play) {
 	  return Morph.Path()
-		.moveTo(width * 0.1, height * 0.05)
+		.moveTo(width * 0.15, height * 0.05)
 		.lineTo(width * 0.9, height / 2)
-		.lineTo(width * 0.1, height * 0.95)
+		.lineTo(width * 0.15, height * 0.95)
 		.close();
 	} else if (type == DynamicButtonType.Pause) {
 	  return Morph.Path()
@@ -161,5 +161,5 @@ DynamicButton.defaultProps = {
   strokeColor: '#9FABFF',
   strokeWidth: 8,
   type: DynamicButtonType.Play,
-  animationDuration: 20,
+  animationDuration: 10,
 };
