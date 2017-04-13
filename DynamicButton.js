@@ -28,12 +28,27 @@ export class DynamicButton extends Component {
     console.log("do it do it");
   }
 
+  easeOutBounce(t, b, c, d) {
+    if ((t/=d) < (1/2.75)) {
+		return c*(7.5625*t*t) + b;
+	} else if (t < (2/2.75)) {
+		return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;
+	} else if (t < (2.5/2.75)) {
+		return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;
+	} else {
+		return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
+	}
+  }
+  
   animate(start) {
     this.animating = requestAnimationFrame((timestamp) => {
       if (!start) {
         start = timestamp;
       }
-      const delta = (timestamp - start) / this.props.animationDuration;
+      let duration = this.props.animationDuration;
+      let delta = (timestamp - start) / this.props.animationDuration;
+      let delta2 = this.easeOutBounce(timestamp - start, 0, 1, duration);
+      console.log("Delta 2 " + delta2);
 
       if (delta > 1) {
         this.animating = null;
@@ -45,7 +60,7 @@ export class DynamicButton extends Component {
         return;
       }
 
-      this.state.pathAnimation.tween(delta);
+      this.state.pathAnimation.tween(delta2);
 
       this.setState(this.state, () => {
         this.animate(start);
@@ -161,5 +176,5 @@ DynamicButton.defaultProps = {
   strokeColor: '#9FABFF',
   strokeWidth: 8,
   type: DynamicButtonType.Play,
-  animationDuration: 10,
+  animationDuration: 500,
 };
