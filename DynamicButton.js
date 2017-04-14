@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import {
   View,
   TouchableWithoutFeedback,
-  Animated
+  Animated,
+  Easing
 } from 'react-native';
 import {
   Surface,
@@ -23,21 +24,18 @@ export class DynamicButton extends Component {
   constructor(props) {
     super(props);
     
-    this.currentPath = this.getNormalPath(this.props.type);
-    this.state = {pathAnimation: Morph.Tween(this.currentPath, this.currentPath)};
-    console.log("do it do it");
-  }
+    let type = this.props.type;
+    this.currentPath = this.getNormalPath(type);
+    this.nextPath = this.getHighlightPath(type);
+    this.state = {pathAnimation: Morph.Tween(this.currentPath, this.nextPath)};
+    
+    this.tweenAnim = new Animated.Value(0);
+    this.tweenAnim.addListener(({value}) => {
+      console.log("Update tweenAnim " + value);
+      this.state.pathAnimation.tween(value);
+      this.setState(this.state);
+    });
 
-  easeOutBounce(t, b, c, d) {
-    if ((t/=d) < (1/2.75)) {
-		return c*(7.5625*t*t) + b;
-	} else if (t < (2/2.75)) {
-		return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;
-	} else if (t < (2.5/2.75)) {
-		return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;
-	} else {
-		return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
-	}
   }
   
   animate(start) {
@@ -45,22 +43,8 @@ export class DynamicButton extends Component {
       if (!start) {
         start = timestamp;
       }
-      let duration = this.props.animationDuration;
-      let delta = (timestamp - start) / this.props.animationDuration;
-      let delta2 = this.easeOutBounce(timestamp - start, 0, 1, duration);
-      console.log("Delta 2 " + delta2);
 
-      if (delta > 1) {
-        this.animating = null;
-        this.currentPath = this.nextPath;
-        this.setState({
-          pathAnimation: Morph.Tween(this.currentPath, this.currentPath)
-        });
-
-        return;
-      }
-
-      this.state.pathAnimation.tween(delta2);
+      this.state.pathAnimation.tween(this.tween);
 
       this.setState(this.state, () => {
         this.animate(start);
@@ -125,7 +109,8 @@ export class DynamicButton extends Component {
   render() {
     const width = this.props.style.width;
     const height = this.props.style.height;
-    console.log("Render Accc");
+    console.log("Render Hihihi");
+    //this.state.pathAnimation.tween(this.state.tween);
     return (
       <TouchableWithoutFeedback onPress={this._onPress} onPressIn={this._onPressIn.bind(this)} onPressOut={this._onPressOut.bind(this)}>
         <View style={{width: width, height: height, backgroundColor: '#FF0000'}}>
@@ -145,23 +130,21 @@ export class DynamicButton extends Component {
   
   _onPressIn() {
     console.log("_onPressIn");
-    let type = this.props.type;
     
-    this.currentPath = this.getNormalPath(type);
-    this.nextPath = this.getHighlightPath(type);
-    this.state = {pathAnimation: Morph.Tween(this.currentPath, this.nextPath)};
-    this.animate();
+    Animated.timing(this.tweenAnim, {
+      toValue: 1,
+      duration: 10,
+      easing: Easing.bounce
+    }).start();
   }
   
   _onPressOut() {
     console.log("_onPressOut");
-    
-    let type = this.props.type;
-    
-    this.currentPath = this.getHighlightPath(type);
-    this.nextPath = this.getNormalPath(type);
-    this.state = {pathAnimation: Morph.Tween(this.currentPath, this.nextPath)};
-    this.animate();
+   
+    Animated.timing(this.tweenAnim, {
+      toValue: 0,
+      duration: 100
+    }).start();
   }
 }
 
