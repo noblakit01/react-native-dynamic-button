@@ -131,10 +131,16 @@ export class DynamicButton extends Component {
   _onPressIn() {
     console.log("_onPressIn");
     
-    Animated.timing(this.tweenAnim, {
+    /*Animated.timing(this.tweenAnim, {
       toValue: 1,
-      duration: 10,
+      duration: 100,
       easing: Easing.bounce
+    }).start();*/
+    
+    Animated.spring(this.tweenAnim, {
+      toValue: 1,
+      friction: 5,
+      tension: 400
     }).start();
   }
   
