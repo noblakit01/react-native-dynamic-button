@@ -149,7 +149,8 @@ export class DynamicButton extends Component {
    
     Animated.timing(this.tweenAnim, {
       toValue: 0,
-      duration: 100
+      duration: 100,
+      easing: Easing.out(easing)
     }).start();
   }
 }
