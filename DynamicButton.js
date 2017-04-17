@@ -38,9 +38,9 @@ export class DynamicButton extends Component {
   }
   
   componentWillReceiveProps(nextProps) {
-    super.componentWillReceiveProps(nextProps);
     
     console.log("componentWillReceiveProps");
+    
   }
   
   animate(start) {
