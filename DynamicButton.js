@@ -72,16 +72,16 @@ export class DynamicButton extends Component {
   	  return Morph.Path()
   		.moveTo(width * 0.33, height * 0.15)
   		.lineTo(width * 0.33, height * 0.85)
-          .moveTo(width * 0.67, height * 0.15)
+        .moveTo(width * 0.67, height * 0.15)
   		.lineTo(width * 0.67, height * 0.85)
   		.close();
   	} else if (type == DynamicButtonType.Stop) {
         return Morph.Path()
   		.moveTo(width * 0.15, height * 0.15)
   		.lineTo(width * 0.85, height * 0.15)
-          .lineTo(width * 0.85, height * 0.85)
+        .lineTo(width * 0.85, height * 0.85)
   		.lineTo(width * 0.15, height * 0.85)
-          .lineTo(width * 0.15, height * 0.15)
+        .lineTo(width * 0.15, height * 0.15)
   		.close();
       }
   }	
@@ -99,7 +99,7 @@ export class DynamicButton extends Component {
   	  return Morph.Path()
   		.moveTo(width * 0.33, height * 0.15)
   		.lineTo(width * 0.33, height * 0.85)
-          .moveTo(width * 0.67, height * 0.15)
+        .moveTo(width * 0.67, height * 0.15)
   		.lineTo(width * 0.67, height * 0.85)
   		.close();
   	} else if (type == DynamicButtonType.Stop) {

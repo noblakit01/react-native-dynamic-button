@@ -21,7 +21,7 @@ export default class Example extends Component {
   constructor(props) {
     super(props);
     
-    this.state = {buttonType: DynamicButtonType.Play};
+    this.state = {buttonType: DynamicButtonType.Pause};
   }
   
   render() {
