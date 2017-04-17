@@ -35,7 +35,12 @@ export class DynamicButton extends Component {
       this.state.pathAnimation.tween(value);
       this.setState(this.state);
     });
-
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    super.componentWillReceiveProps(nextProps);
+    
+    console.log("componentWillReceiveProps");
   }
   
   animate(start) {
@@ -112,7 +117,7 @@ export class DynamicButton extends Component {
     console.log("Render Hihihi");
     //this.state.pathAnimation.tween(this.state.tween);
     return (
-      <TouchableWithoutFeedback onPress={this._onPress} onPressIn={this._onPressIn.bind(this)} onPressOut={this._onPressOut.bind(this)}>
+      <TouchableWithoutFeedback onPress={this.props.onPress} onPressIn={this._onPressIn.bind(this)} onPressOut={this._onPressOut.bind(this)}>
         <View style={{width: width, height: height, backgroundColor: '#FF0000'}}>
           <Surface width={width} height={height}>
           <Shape stroke={this.props.strokeColor} strokeWidth={this.props.strokeWidth} d = {this.state.pathAnimation} />
@@ -120,12 +125,6 @@ export class DynamicButton extends Component {
         </View>
       </TouchableWithoutFeedback>
     );
-  }
-  
-  
-  // Touch 
-  _onPress() {
-	console.log("_onPress");
   }
   
   _onPressIn() {
@@ -160,11 +159,12 @@ DynamicButton.propTypes = {
   strokeWidth: PropTypes.number,
   type: PropTypes.oneOf([DynamicButtonType.Play, DynamicButtonType.Pause, DynamicButtonType.Stop]),
   animationDuration: PropTypes.number,
+  onPress: PropTypes.func
 };
 
 DynamicButton.defaultProps = {
   strokeColor: '#9FABFF',
   strokeWidth: 8,
   type: DynamicButtonType.Play,
-  animationDuration: 500,
+  animationDuration: 500
 };

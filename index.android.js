@@ -25,6 +25,10 @@ export default class Example extends Component {
       </View>
     );
   };
+  
+  _onPress() {
+    console.log("App ON PRESS");
+  }
 }
 
 const styles = StyleSheet.create({
